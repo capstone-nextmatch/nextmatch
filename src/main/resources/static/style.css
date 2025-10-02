@@ -1,0 +1,118 @@
+/* =============================== */
+/* 공통 레이아웃 및 요소 (Common)    */
+/* =============================== */
+body {
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* ========================================= */
+/* 폼 컨테이너 공통 스타일 (Form Wrapper)    */
+/* ========================================= */
+.form-wrapper {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.form-wrapper h2 {
+    text-align: center;
+    margin-bottom: 25px; /* 기본 마진을 로그인 폼 기준으로 설정 */
+}
+
+.form-wrapper .input-group {
+    margin-bottom: 15px;
+}
+
+.form-wrapper button {
+    width: 100%;
+    padding: 10px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* =================================== */
+/* 개별 폼 스타일 (Specific Forms)   */
+/* =================================== */
+
+/* 로그인 폼 고유 스타일 */
+.login-form .options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.login-form .options label {
+    margin-bottom: 0;
+}
+
+.login-form .links {
+    text-align: center;
+    font-size: 14px;
+}
+
+.login-form .links a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.login-form .links a:hover {
+    text-decoration: underline;
+}
+
+.login-form button {
+    background-color: #28a745; /* 초록색 */
+}
+
+.login-form button:hover {
+    background-color: #218838;
+}
+.login-form .remember-me-group {
+    display: flex; /* 1. 체크박스와 라벨을 가로로 배치 */
+    align-items: center; /* 2. 세로 방향 가운데 정렬 */
+}
+
+.login-form .remember-me-group label {
+    display: inline; /* 3. 라벨의 block 속성을 해제 */
+    margin-bottom: 0; /* 불필요한 아래쪽 마진 제거 */
+    margin-left: 3px; /* 4. 체크박스와의 간격을 살짝 띄워줌 */
+    white-space: nowrap;
+}
+
+/* 회원가입 폼 고유 스타일 */
+.signup-form h2 {
+    margin-bottom: 20px; /* 회원가입 폼의 h2 마진만 다르게 설정 */
+}
+
+.signup-form button {
+    background-color: #007BFF; /* 파란색 */
+}
+
+.signup-form button:hover {
+    background-color: #0056b3;
+}

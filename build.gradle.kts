@@ -4,9 +4,9 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.7"
 }
 
-group = "com.project"
+group = "com.example"
 version = "0.0.1-SNAPSHOT"
-description = "Demo project for Spring Boot"
+description = "gaip and log in controller making"
 
 java {
 	toolchain {
@@ -26,15 +26,16 @@ repositories {
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("com.h2database:h2")
-	implementation("com.mysql:mysql-connector-j:8.0.33")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.security:spring-security-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation ("org.springframework.boot:spring-boot-starter-validation")
 }
 
 tasks.withType<Test> {
