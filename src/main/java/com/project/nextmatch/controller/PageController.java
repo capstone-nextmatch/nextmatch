@@ -11,4 +11,10 @@ public class PageController {
     public String home() {
         return "home";
     }
+
+    @GetMapping("/dashboard") public String dashboard() {return "dashboard";}
+
+    @GetMapping("/signin") public String signin() {return "signin";}
+
+    @GetMapping("/detail") public String detail() {return "detail";}
 }
