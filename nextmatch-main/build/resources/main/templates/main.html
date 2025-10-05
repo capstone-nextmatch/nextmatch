@@ -1,0 +1,26 @@
+<!-- src/main/resources/templates/main.html -->
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>메인</title></head>
+<body>
+<main style="max-width:960px;margin:24px auto;padding:0 16px">
+    <h2>대회 목록</h2>
+
+    <!-- 임시 목업 카드 3개 -->
+    <section style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px">
+        <a href="/tournaments/1" style="border:1px solid #eee;border-radius:12px;padding:16px;text-decoration:none;color:#111">
+            <h3>예시 대회 1</h3>
+            <p>2025-10-20 · 서울</p>
+        </a>
+        <a href="/tournaments/2" style="border:1px solid #eee;border-radius:12px;padding:16px;text-decoration:none;color:#111">
+            <h3>예시 대회 2</h3>
+            <p>2025-11-02 · 부산</p>
+        </a>
+        <a href="/tournaments/3" style="border:1px solid #eee;border-radius:12px;padding:16px;text-decoration:none;color:#111">
+            <h3>예시 대회 3</h3>
+            <p>2025-12-15 · 대전</p>
+        </a>
+    </section>
+</main>
+</body>
+</html>

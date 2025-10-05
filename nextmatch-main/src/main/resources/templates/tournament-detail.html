@@ -1,0 +1,17 @@
+<!-- src/main/resources/templates/tournament-detail.html -->
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title th:text="${title}">대회 상세</title></head>
+<body>
+<main style="max-width:720px;margin:24px auto;padding:0 16px">
+    <h2 th:text="${title}">대회명</h2>
+    <p><strong>일시:</strong> <span th:text="${date}">2025-10-20</span></p>
+    <p><strong>장소:</strong> <span th:text="${location}">서울</span></p>
+    <p th:text="${desc}">상세 설명</p>
+    <div style="display:flex;gap:8px;margin-top:16px">
+        <a href="/main">목록으로</a>
+        <a href="/mypage">마이페이지</a>
+    </div>
+</main>
+</body>
+</html>
