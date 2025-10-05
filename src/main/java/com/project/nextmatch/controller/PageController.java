@@ -20,6 +20,4 @@ public class PageController {
     @GetMapping("/signup") public String signup() {return "signup";}
 
     @GetMapping("/mypage") public String mypage() {return "mypage";}
-    
-    @GetMapping("/page") public String mypage() {return "mypage";}
 }
