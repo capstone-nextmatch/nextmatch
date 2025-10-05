@@ -20,4 +20,5 @@ public class EventCreateRequest {
     private String description;
     private LocalDate eventDate;
     private LocalDate deadlineDate;
+    private String title;
 }

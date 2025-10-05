@@ -1,9 +1,9 @@
+//이병철
 package com.project.nextmatch.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 
 import java.time.LocalDate;
 
@@ -11,6 +11,8 @@ import java.time.LocalDate;
 @Table(name = "events")
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Event {
 
     @Id
@@ -34,4 +36,6 @@ public class Event {
     private LocalDate eventDate;
 
     private LocalDate deadlineDate;
+
+    private String title;
 }
