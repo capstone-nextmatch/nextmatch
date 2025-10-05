@@ -12,9 +12,12 @@ public class PageController {
         return "home";
     }
 
-    @GetMapping("/dashboard") public String dashboard() {return "dashboard";}
 
-    @GetMapping("/signin") public String signin() {return "signin";}
+    @GetMapping("/main") public String main() {return "main";}
 
-    @GetMapping("/detail") public String detail() {return "detail";}
+    @GetMapping("/login") public String login() {return "login";}
+
+    @GetMapping("/signup") public String signup() {return "signup";}
+
+    @GetMapping("/mypage") public String mypage() {return "mypage";}
 }
