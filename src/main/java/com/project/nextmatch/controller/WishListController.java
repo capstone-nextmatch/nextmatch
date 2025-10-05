@@ -1,4 +1,4 @@
-package work.wish.wishlist1.controller;
+package com.project.nextmatch.controller;
 
 import work.wish.wishlist1.dto.WishListRequestDto;
 import work.wish.wishlist1.dto.WishListResponseDto;
@@ -66,4 +66,5 @@ public class WishListController {
         boolean isWished = wishListService.isContestWished(memberId, contestId);
         return ResponseEntity.ok(isWished);
     }
+
 }
