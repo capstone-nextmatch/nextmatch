@@ -1,8 +1,8 @@
 package com.project.nextmatch.controller;
 
-import work.wish.wishlist1.dto.WishListRequestDto;
-import work.wish.wishlist1.dto.WishListResponseDto;
-import work.wish.wishlist1.service.WishListService;
+import com.project.nextmatch.dto.WishListRequestDto;
+import com.project.nextmatch.dto.WishListResponseDto;
+import com.project.nextmatch.service.WishListService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,5 +66,4 @@ public class WishListController {
         boolean isWished = wishListService.isContestWished(memberId, contestId);
         return ResponseEntity.ok(isWished);
     }
-
 }
