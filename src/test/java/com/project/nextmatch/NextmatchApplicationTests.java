@@ -27,6 +27,7 @@ class NextmatchApplicationTests {
 	void contextLoads() {
 	}
 
+	//권동혁
 	@Test
 	@Rollback(value = false)
 	void create_event() {
