@@ -1,3 +1,5 @@
+//권동혁
+
 package com.project.nextmatch.domain;
 
 import jakarta.persistence.*;
