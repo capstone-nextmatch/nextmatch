@@ -1,4 +1,5 @@
-package com.example.gaipLogin;
+//1006 백송렬 작성
+package com.project.nextmatch;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

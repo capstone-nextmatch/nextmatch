@@ -1,5 +1,7 @@
-package com.example.gaipLogin;
+//1006 백송렬 작성
+package com.project.nextmatch.controller;
 
+import com.project.nextmatch.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

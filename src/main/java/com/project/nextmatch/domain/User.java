@@ -1,4 +1,5 @@
-package com.example.gaipLogin;
+//1006 백송렬 작성
+package com.project.nextmatch.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -29,7 +30,6 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email; //유저 이메일
 
-    
 
     public User(String userId, String name, String password,
                 String phone, String email) {

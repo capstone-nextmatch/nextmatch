@@ -1,5 +1,7 @@
-package com.example.gaipLogin;
+//1006 백송렬 작성
+package com.project.nextmatch.repository;
 
+import com.project.nextmatch.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 

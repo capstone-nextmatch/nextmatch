@@ -1,16 +1,18 @@
+/*1006 백송렬 작성*/
 /* =============================== */
 /* 공통 레이아웃 및 요소 (Common)    */
 /* =============================== */
 body {
     font-family: sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
     margin: 0;
     background-color: #f4f4f4;
 }
-
+.main-content{
+    display: flex;
+    justify-content:center;
+    align-items:center;
+}
 label {
     display: block;
     margin-bottom: 5px;
@@ -22,6 +24,18 @@ input {
     border: 1px solid #ddd;
     border-radius: 4px;
     box-sizing: border-box;
+}
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 16px;
+    border-bottom:1px solid #eee
+}
+nav a{
+    margin-right:12px;
+    text-decoration:none;
+    color:#333
 }
 
 /* ========================================= */

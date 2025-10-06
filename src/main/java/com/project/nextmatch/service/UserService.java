@@ -1,5 +1,8 @@
-package com.example.gaipLogin;
+//1006 백송렬 작성
+package com.project.nextmatch.service;
 
+import com.project.nextmatch.domain.User;
+import com.project.nextmatch.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

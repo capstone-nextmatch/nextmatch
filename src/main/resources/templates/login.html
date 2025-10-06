@@ -1,40 +1,41 @@
+<!-- 1006 백송렬 작성 -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>간단한 로그인 페이지</title>
-    <link rel="stylesheet" href="style.css">
+    <title>NextMatch - 로그인</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
+<header>
+    <strong>NextMatch</strong>
+    <nav>
+        <a href="/main">메인</a>
+        <a href="/login">로그인</a>
+        <a href="/signup">회원가입</a>
+    </nav>
+</header>
 
-<div class="form-wrapper login-form">
-    <form>
-        <h2>로그인</h2>
+<main class="main-content">
+    <div class="form-wrapper login-form">
+        <form>
+            <h2>로그인</h2>
 
-        <div class="input-group">
-            <label for="userId">아이디</label>
-            <input type="text" id="userId" name="userId" required>
-        </div>
-
-        <div class="input-group">
-            <label for="password">비밀번호</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-
-        <div class="options">
-            <div class="remember-me-group">
-                <input type="checkbox" id="remember-me" name="remember-me">
-                <label for="remember-me">아이디 저장</label>
+            <div class="input-group">
+                <label for="userId">아이디</label>
+                <input type="text" id="userId" name="userId" required>
             </div>
-            <div class="links">
-                <a href="#">비밀번호 찾기</a>
-            </div>
-        </div>
 
-        <button type="button" onclick="login()">로그인</button>
-    </form>
-</div>
+            <div class="input-group">
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <button type="button" onclick="login()">로그인</button>
+        </form>
+    </div>
+</main>
 <script>
     function login() {
         // 1. HTML에서 id를 이용해 입력값을 가져옵니다.
@@ -60,7 +61,7 @@
             if (response.ok) {
                 alert('로그인 성공!');
                 // 로그인 성공 시, 메인 페이지나 다른 페이지로 이동시킬 수 있습니다.
-                // window.location.href = '/main.html';
+                window.location.href = '/main';
             } else {
                 // 서버에서 보낸 에러 메시지를 받아서 표시
                 response.text().then(errorMessage => {
