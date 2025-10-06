@@ -1,1 +1,1 @@
-rootProject.name = "gaipLogin"
+rootProject.name = "nextmatch"

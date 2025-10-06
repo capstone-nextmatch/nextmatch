@@ -56,55 +56,55 @@
     </div>
 </main>
 <script>
-function signup(){
-    const userid = document.getElementById('userid').value;
-    const fullname = document.getElementById('fullname').value;
-    const password = document.getElementById('password').value;
-    const passwordConfirm = document.getElementById('password-confirm').value;
-    const phonenumber = document.getElementById('phonenumber').value;
-    const email = document.getElementById('email').value;
+    function signup(){
+        const userid = document.getElementById('userid').value;
+        const fullname = document.getElementById('fullname').value;
+        const password = document.getElementById('password').value;
+        const passwordConfirm = document.getElementById('password-confirm').value;
+        const phonenumber = document.getElementById('phonenumber').value;
+        const email = document.getElementById('email').value;
 
-    //비밀번호 일치 확인
-    if (password !== passwordConfirm) {
-        alert('비밀번호가 일치하지 않습니다. 다시 확인해주세요.');
-        return; // 비밀번호가 다르면 여기서 함수를 즉시 종료!
+        //비밀번호 일치 확인
+        if (password !== passwordConfirm) {
+            alert('비밀번호가 일치하지 않습니다. 다시 확인해주세요.');
+            return; // 비밀번호가 다르면 여기서 함수를 즉시 종료!
+        }
+
+        // DTO의 변수명과 키(key)를 정확히 일치시킵니다.
+        const data = {
+            userId: userid,
+            name: fullname,
+            password: password,
+            passwordConfirm: passwordConfirm,
+            phone: phonenumber,
+            email: email
+        };
+
+        // 3. fetch API를 이용해 서버로 POST 요청을 보냅니다.
+            fetch('/api/signup', { // 우리가 UserController에 설정한 주소
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data) // JSON 데이터를 문자열로 변환하여 보냅니다.
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('회원가입 성공!');
+                    // 로그인 페이지로 이동
+                    window.location.href = '/login';
+                } else {
+                    // 서버에서 보낸 에러 메시지를 받아서 표시
+                    response.text().then(errorMessage => {
+                        alert('회원가입 실패: ' + errorMessage);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('에러 발생:', error);
+                alert('에러가 발생했습니다.');
+            });
     }
-
-    // DTO의 변수명과 키(key)를 정확히 일치시킵니다.
-    const data = {
-        userId: userid,
-        name: fullname,
-        password: password,
-        passwordConfirm: passwordConfirm,
-        phone: phonenumber,
-        email: email
-    };
-
-    // 3. fetch API를 이용해 서버로 POST 요청을 보냅니다.
-        fetch('/api/signup', { // 우리가 UserController에 설정한 주소
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data) // JSON 데이터를 문자열로 변환하여 보냅니다.
-        })
-        .then(response => {
-            if (response.ok) {
-                alert('회원가입 성공!');
-                // 로그인 페이지로 이동
-                window.location.href = '/login';
-            } else {
-                // 서버에서 보낸 에러 메시지를 받아서 표시
-                response.text().then(errorMessage => {
-                    alert('회원가입 실패: ' + errorMessage);
-                });
-            }
-        })
-        .catch(error => {
-            console.error('에러 발생:', error);
-            alert('에러가 발생했습니다.');
-        });
-}
 </script>
 </body>
 </html>
