@@ -1,3 +1,7 @@
+/**
+ * Filename: WishlistRequestDto.java
+ * Author: Sejun Park
+ */
 package com.project.nextmatch.dto;
 
 import lombok.Getter;
@@ -6,4 +10,5 @@ import lombok.Getter;
 public class WishListRequestDto {
     private Long memberId;
     private Long contestId;
+
 }

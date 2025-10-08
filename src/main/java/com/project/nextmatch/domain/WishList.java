@@ -1,3 +1,7 @@
+/**
+ * Filename: WishList.java
+ * Author: Sejun Park
+ */
 package com.project.nextmatch.domain;
 
 import lombok.*;
@@ -45,3 +49,4 @@ public class WishList {
         this.registeredAt = LocalDateTime.now();
     }
 }
+

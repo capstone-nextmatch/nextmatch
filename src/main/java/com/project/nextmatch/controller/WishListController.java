@@ -1,3 +1,7 @@
+/**
+ * Filename: WishlistController.java
+ * Author: Sejun Park
+ */
 package com.project.nextmatch.controller;
 
 import com.project.nextmatch.dto.WishListRequestDto;
@@ -66,4 +70,5 @@ public class WishListController {
         boolean isWished = wishListService.isContestWished(memberId, contestId);
         return ResponseEntity.ok(isWished);
     }
+
 }

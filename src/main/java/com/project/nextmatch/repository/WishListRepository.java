@@ -1,3 +1,7 @@
+/**
+ * Filename: WishlistRepository.java
+ * Author: Sejun Park
+ */
 package com.project.nextmatch.repository;
 
 import com.project.nextmatch.domain.WishList; // 엔티티 경로 확인
@@ -21,4 +25,5 @@ public interface WishListRepository extends JpaRepository<WishList, Long> {
      * 특정 회원 ID와 대회 ID를 통해 등록된 WishList 항목의 존재 여부만 확인합니다.
      */
     boolean existsByMember_IdAndContest_Id(Long memberId, Long contestId);
+
 }

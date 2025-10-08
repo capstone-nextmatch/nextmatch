@@ -1,3 +1,7 @@
+/**
+ * Filename: WishlistResponseDto.java
+ * Author: Sejun Park
+ */
 package com.project.nextmatch.dto;
 
 import com.project.nextmatch.domain.WishList;
@@ -22,4 +26,5 @@ public class WishListResponseDto {
                 .registeredAt(wishList.getRegisteredAt())
                 .build();
     }
+
 }
