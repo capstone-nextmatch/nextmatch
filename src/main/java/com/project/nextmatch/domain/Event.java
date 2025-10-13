@@ -5,6 +5,7 @@ package com.project.nextmatch.domain;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 @Table(name = "events")
 @Builder
 @AllArgsConstructor
+@Getter
 public class Event {
 
     @Id
@@ -36,4 +38,6 @@ public class Event {
     private LocalDate eventDate;
 
     private LocalDate deadlineDate;
+
+    private String title;
 }
