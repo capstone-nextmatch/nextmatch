@@ -1,8 +1,8 @@
 package com.project.nextmatch;
 
 import com.project.nextmatch.domain.Member;
-import com.project.nextmatch.dto.EventCreateRequest;
-import com.project.nextmatch.service.EventService;
+import com.project.nextmatch.dto.ContestCreateRequest;
+import com.project.nextmatch.service.ContestService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -21,7 +21,7 @@ class NextmatchApplicationTests {
 	private EntityManager em;
 
 	@Autowired
-	private EventService eventService;
+	private ContestService contestService;
 
 	@Test
 	void contextLoads() {
@@ -40,16 +40,17 @@ class NextmatchApplicationTests {
 		em.flush();
 		em.clear();
 
-		EventCreateRequest request = EventCreateRequest.builder()
+		ContestCreateRequest request = ContestCreateRequest.builder()
 				.username("isd")
 				.eventCategory("ffdsdf")
 				.imageUrl("///")
+				.title("대회")
 				.description("fdsfdsf")
-				.eventDate(LocalDate.of(2025, 9, 23))
+				.startDate(LocalDate.of(2025, 9, 23))
 				.deadlineDate(LocalDate.of(2025, 9, 25))
 				.build();
 
-		eventService.eventCreate(request);
+		contestService.contestCreate(request);
 
 
 	}
