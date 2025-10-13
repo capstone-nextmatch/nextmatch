@@ -22,8 +22,20 @@ public class Contest {
 
     private LocalDate startDate; // 대회 시작일
 
-    @Column(length = 100)
-    private String host; // 주최측
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
+
+    private String eventCategory;
+
+    private String status;
+
+    private String imageUrl;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    private LocalDate deadlineDate;
 
     // 대진표 관련 다른 정보들 (예: 장소, 종목 등)은 여기에 추가될 수 있습니다.
 }

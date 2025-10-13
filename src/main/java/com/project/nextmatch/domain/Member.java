@@ -8,6 +8,7 @@ import lombok.*;
 @Entity
 @Table(name = "members")
 @Builder
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Member {

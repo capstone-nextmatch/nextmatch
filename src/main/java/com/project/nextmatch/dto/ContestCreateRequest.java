@@ -8,18 +8,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventCreateRequest {
+public class ContestCreateRequest {
 
     private String username;
     private String eventCategory;
     private String imageUrl;
+    private String title;
     private String description;
-    private LocalDate eventDate;
+    private LocalDate startDate;
     private LocalDate deadlineDate;
 }
