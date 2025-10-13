@@ -8,9 +8,9 @@ import lombok.*;
 @Entity
 @Table(name = "members")
 @Builder
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter //1013 백송렬 작성
 public class Member {
 
     @Id
