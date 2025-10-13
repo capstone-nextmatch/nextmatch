@@ -1,3 +1,7 @@
+/**
+ * Filename: Contest.java
+ * Author: Sejun Park
+ */
 package com.project.nextmatch.domain;
 
 import lombok.*;
@@ -26,4 +30,5 @@ public class Contest {
     private String host; // 주최측
 
     // 대진표 관련 다른 정보들 (예: 장소, 종목 등)은 여기에 추가될 수 있습니다.
+
 }
