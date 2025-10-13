@@ -35,6 +35,9 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation("org.springframework.boot:spring-boot-starter-security")//1006 백송렬 작성
+    testImplementation("org.springframework.security:spring-security-test")//1006 백송렬 작성
+    implementation ("org.springframework.boot:spring-boot-starter-validation")//1006 백송렬 작성
 }
 
 tasks.withType<Test> {
