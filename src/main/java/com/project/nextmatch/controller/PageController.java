@@ -7,13 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class PageController {
 
-    @GetMapping("/")
-    public String home() {
-        return "home";
-    }
+    @GetMapping("/") public String main() {return "main";}
 
-
-    @GetMapping("/main") public String main() {return "main";}
+    @GetMapping("/register-contest") public String registerContest() {return "register-contest";}
 
     @GetMapping("/login") public String login() {return "login";}
 
