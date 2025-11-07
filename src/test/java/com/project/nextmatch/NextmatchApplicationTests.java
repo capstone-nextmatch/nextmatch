@@ -126,7 +126,7 @@ class NextmatchApplicationTests {
 				.contestCategory("농구")
 				.title("2025농구대회")
 				.startDate(LocalDate.now().plusDays(1))
-				.deadlineDate(LocalDate.now())
+				.deadlineDate(LocalDate.now().plusDays(2))
 				.build();
 
 		// when
