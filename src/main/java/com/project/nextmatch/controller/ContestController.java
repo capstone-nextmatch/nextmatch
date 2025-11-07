@@ -4,6 +4,7 @@ package com.project.nextmatch.controller;
 
 import com.project.nextmatch.dto.ContestCreateRequest;
 import com.project.nextmatch.service.ContestService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +20,7 @@ public class ContestController {
     private final ContestService contestService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createEvent(@RequestBody ContestCreateRequest request) {
+    public ResponseEntity<?> createEvent(@Valid @RequestBody ContestCreateRequest request) {
         try {
             contestService.contestCreate(request);
             return ResponseEntity.ok("대회등록이 완료되었습니다.");

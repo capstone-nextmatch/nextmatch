@@ -23,11 +23,15 @@ public class ContestService {
 
     public void contestCreate(ContestCreateRequest request) {
         Member member = memberRepository.findByUsername(request.getUsername()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        if (request.getStartDate().isAfter(request.getDeadlineDate())) {
+            throw new IllegalArgumentException("시작일은 마감일보다 이전이어야 합니다");
+        }
+
 
         //대회 생성
         Contest contest = Contest.builder()
                 .member(member)
-                .eventCategory(request.getEventCategory())
+                .eventCategory(request.getContestCategory())
                 .imageUrl(request.getImageUrl())
                 .title(request.getTitle())
                 .description(request.getDescription())
