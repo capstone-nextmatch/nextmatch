@@ -173,7 +173,7 @@
         // 날짜 형식 단순화 (문제 해결 핵심)
         const date = event.eventDate;
 
-        const detailUrl = `/detail?id=${event.id}`;
+        const detailUrl = `/api/event/tournaments/detail?id=${event.id}`;
 
         // Status 텍스트를 소문자로 변환하여 CSS 클래스에 사용
         const statusClass = event.status ? event.status.toLowerCase() : 'unknown';
