@@ -258,7 +258,7 @@ class KwonContestServiceTest {
     }
 
     @Test
-    @Sql(statements = {"DELETE FROM contest", "DELETE FROM members"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(statements = {"DELETE FROM contest", "DELETE FROM members"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @DisplayName("7. DB 커넥션 동시성 테스트")
     void connectionConcurrencyTest() throws InterruptedException {
         Member member = memberRepository.save(
