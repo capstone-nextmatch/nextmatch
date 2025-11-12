@@ -61,7 +61,6 @@ public class UserController {
     }
 
     // 이 예제에서는 로그인 성공/실패만 간단히 반환합니다.
-    // 실제로는 로그인 성공 시 JWT 토큰을 반환하거나 세션을 생성해야 합니다.
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody SignupRequest request) {
         try{
