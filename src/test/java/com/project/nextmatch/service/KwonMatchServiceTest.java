@@ -1,8 +1,6 @@
 package com.project.nextmatch.service;
 
-import com.project.nextmatch.domain.Contest;
-import com.project.nextmatch.domain.Member;
-import com.project.nextmatch.domain.Round;
+import com.project.nextmatch.domain.*;
 import com.project.nextmatch.dto.MatchResultRequest;
 import com.project.nextmatch.repository.*;
 import jakarta.persistence.EntityManager;
@@ -18,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,13 +103,28 @@ class KwonMatchServiceTest {
                         .description("테스트용 대회입니다.")
                         .build()
         );
+
+        // 테스트용 Player 2명 생성
+        Player p1 = playerRepository.save(Player.builder().member(members.get(0)).contest(contest).build());
+        Player p2 = playerRepository.save(Player.builder().member(members.get(1)).contest(contest).build());
+
+        // 테스트용 Match 생성
+        Match match = matchRepository.save(
+                Match.builder()
+                        .player1(p1)
+                        .player2(p2)
+                        .round(roundRepository.save(Round.builder().contest(contest).roundNumber(1).build()))
+                        .build()
+        );
+
     }
 
 
 
     //권동혁
     @Test
-    @DisplayName("경기 생성 성공 테스트 - 16명 참가자")
+    @Transactional
+    @DisplayName("1. 경기 생성 성공 테스트 - 16명 참가자")
     void createMatch_success() throws Exception {
         // given: 16명의 memberId와 contestId
         List<Long> memberIds = members.stream()
@@ -159,8 +173,254 @@ class KwonMatchServiceTest {
         rounds.forEach(r -> log.info("Round ID={}, Round Number={}", r.getId(), r.getRoundNumber()));
 
         assertTrue(rounds.size() > 1, "다음 라운드가 생성되어야 합니다.");
+    }
 
+    @Test
+    @DisplayName("2. 경기 생성 실패 테스트 - 잘못된 MemberID 포함")
+    void createMatch_fail_invalidMemberId() throws Exception {
+        // given: 존재하지 않는 Member ID 포함
+        List<Long> memberIds = members.stream()
+                .map(Member::getId)
+                .collect(Collectors.toList());
+        memberIds.set(0, 99999L); // 첫 번째 ID를 가짜로 치환
+
+        String requestJson = """
+        {
+          "memberId": %s,
+          "contestId": %d
+        }
+        """.formatted(memberIds, contest.getId());
+
+        // when & then
+        mockMvc.perform(post("/api/event/create/matches")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isNotFound()) // 예외 핸들러에서 반환한 상태코드
+                .andExpect(content().string(
+                        org.hamcrest.Matchers.containsString("회원이 존재하지 않습니다")));
 
     }
 
+    @Test
+    @DisplayName("3. 경기 생성 실패 테스트 - 잘못된 ContestID")
+    void createMatch_fail_invalidContestId() throws Exception {
+        // given: 가짜 contestId
+        long invalidContestId = 987654321L;
+
+        List<Long> memberIds = members.stream()
+                .map(Member::getId)
+                .collect(Collectors.toList());
+
+        String requestJson = """
+        {
+          "memberId": %s,
+          "contestId": %d
+        }
+        """.formatted(memberIds, invalidContestId);
+
+        // when & then
+        mockMvc.perform(post("/api/event/create/matches")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isNotFound()) // 404 기대
+                .andExpect(content().string(
+                        org.hamcrest.Matchers.containsString("해당 대회가 존재하지 않습니다.")));
+
+    }
+
+    @Test
+    @DisplayName("4. 경기 생성 실패 테스트 - 중복 MemberID 포함")
+    void createMatch_fail_duplicateMemberIds() throws Exception {
+        // given: 중복 ID 포함
+        List<Long> memberIds = members.stream()
+                .map(Member::getId)
+                .collect(Collectors.toList());
+
+        // 예: 0번, 1번을 동일 ID로 만들기
+        Long duplicateId = memberIds.get(0);
+        memberIds.set(1, duplicateId);
+
+        String requestJson = """
+        {
+          "memberId": %s,
+          "contestId": %d
+        }
+        """.formatted(memberIds, contest.getId());
+
+        // when & then
+        mockMvc.perform(post("/api/event/create/matches")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("중복된 참가자")));
+    }
+
+    @Test
+    @DisplayName("5.1. 경기 결과 입력 성공 - Player1 승리")
+    void submitResults_success_player1Win() throws Exception {
+        // given: 테스트용 Player와 Match 생성
+        Player p1 = playerRepository.save(Player.builder()
+                .member(members.get(0))
+                .contest(contest)
+                .build());
+
+        Player p2 = playerRepository.save(Player.builder()
+                .member(members.get(1))
+                .contest(contest)
+                .build());
+
+        Round round = roundRepository.save(Round.builder()
+                .contest(contest)
+                .roundNumber(1)
+                .build());
+
+        Match match = matchRepository.save(Match.builder()
+                .player1(p1)
+                .player2(p2)
+                .round(round)
+                .build());
+
+        String requestJson = """
+        [
+          {
+            "matchId": %d,
+            "score1": 3,
+            "score2": 1
+          }
+        ]
+        """.formatted(match.getId());
+
+        // when & then
+        mockMvc.perform(post("/api/matches/results")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isOk())
+                .andExpect(content().string("경기 결과가 저장되었습니다."));
+
+        // DB에서 다시 조회 후 승자 검증
+        Match updated = matchRepository.findById(match.getId()).orElseThrow();
+        assertNotNull(updated.getWinner(), "승자가 저장되어야 합니다.");
+        assertEquals(updated.getPlayer1().getId(), updated.getWinner().getId(),
+                "Player1이 승자로 저장되어야 합니다.");
+    }
+
+    @Test
+    @DisplayName("5.2. 경기 결과 입력 실패 - 무승부 불가")
+    void submitResults_fail_draw() throws Exception {
+        // given: 테스트용 Player와 Match 생성
+        Player p1 = playerRepository.save(Player.builder()
+                .member(members.get(0))
+                .contest(contest)
+                .build());
+
+        Player p2 = playerRepository.save(Player.builder()
+                .member(members.get(1))
+                .contest(contest)
+                .build());
+
+        Round round = roundRepository.save(Round.builder()
+                .contest(contest)
+                .roundNumber(1)
+                .build());
+
+        Match match = matchRepository.save(Match.builder()
+                .player1(p1)
+                .player2(p2)
+                .round(round)
+                .build());
+
+        String requestJson = """
+    [
+      {
+        "matchId": %d,
+        "score1": 2,
+        "score2": 2
+      }
+    ]
+    """.formatted(match.getId());
+
+        // when & then
+        mockMvc.perform(post("/api/matches/results")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(
+                        org.hamcrest.Matchers.containsString("무승부는 허용되지 않습니다.")));
+    }
+
+    @Test
+    @DisplayName("8. 잘못된 MatchID로 경기 결과 입력 실패")
+    void submitResults_fail_invalidMatchId() throws Exception {
+        // given: 존재하지 않는 Match ID
+        long invalidMatchId = 999999L;
+
+        String requestJson = """
+    [
+      {
+        "matchId": %d,
+        "score1": 1,
+        "score2": 0
+      }
+    ]
+    """.formatted(invalidMatchId);
+
+        // when & then
+        mockMvc.perform(post("/api/matches/results")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string(
+                        org.hamcrest.Matchers.containsString("경기를 찾을 수 없습니다")));
+    }
+
+    @Test
+    @DisplayName("9. 경기 결과 점수 누락 시 실패")
+    void submitResults_fail_missingScore() throws Exception {
+        // given: Match 생성
+        Player p1 = playerRepository.save(Player.builder()
+                .member(members.get(0))
+                .contest(contest)
+                .build());
+
+        Player p2 = playerRepository.save(Player.builder()
+                .member(members.get(1))
+                .contest(contest)
+                .build());
+
+        Round round = roundRepository.save(Round.builder()
+                .contest(contest)
+                .roundNumber(1)
+                .build());
+
+        Match match = matchRepository.save(Match.builder()
+                .player1(p1)
+                .player2(p2)
+                .round(round)
+                .build());
+
+        // score2 누락
+        String requestJson = """
+    [
+      {
+        "matchId": %d,
+        "score1": 3
+      }
+    ]
+    """.formatted(match.getId());
+
+        // when & then
+        mockMvc.perform(post("/api/matches/results")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(
+                        org.hamcrest.Matchers.containsString("점수가 누락되었습니다")));
+    }
 }

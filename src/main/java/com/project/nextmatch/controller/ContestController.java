@@ -6,8 +6,10 @@ import com.project.nextmatch.dto.ContestCreateRequest;
 import com.project.nextmatch.dto.MatchCreateRequest;
 import com.project.nextmatch.service.ContestService;
 import com.project.nextmatch.service.PlayerService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,8 +42,10 @@ public class ContestController {
             //Player -> Create Match and Round
             contestService.createAllMatches(request);
             return ResponseEntity.ok("각 경기생성이 완료되었습니다.");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(401).body("아이디가 유효하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 }

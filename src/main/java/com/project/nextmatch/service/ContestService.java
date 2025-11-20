@@ -16,9 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 
 import java.awt.geom.RoundRectangle2D;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -64,6 +62,11 @@ public class ContestService {
     public void createAllMatches(MatchCreateRequest request) {
 
         List<Long> memberIds = request.getMemberId();
+
+        Set<Long> uniqueIds = new HashSet<>(memberIds);
+        if (uniqueIds.size() != memberIds.size()) {
+            throw new IllegalArgumentException("중복된 참가자가 포함되어 있습니다.");
+        }
 
         // 참가자 → Player 조회
         List<Player> players = playerRepository.findAllByMemberIdInAndContestId(

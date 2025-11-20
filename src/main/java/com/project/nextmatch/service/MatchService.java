@@ -30,6 +30,10 @@ public class MatchService {
             Match match = matchRepository.findById(result.getMatchId())
                     .orElseThrow(() -> new EntityNotFoundException("경기를 찾을 수 없습니다. ID=" + result.getMatchId()));
 
+            if (result.getScore1() == null || result.getScore2() == null) {
+                throw new IllegalArgumentException("점수가 누락되었습니다.");
+            }
+
             match.setScore1(result.getScore1());
             match.setScore2(result.getScore2());
 
