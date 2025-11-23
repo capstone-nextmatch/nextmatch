@@ -37,6 +37,12 @@ public class ContestController {
     @PostMapping("/create/matches")
     public ResponseEntity<?> createMatch(@Valid @RequestBody MatchCreateRequest request) {
         try {
+
+            // 참가자 수 홀수 검증 먼저
+            if (request.getMemberId().size() % 2 != 0) {
+                throw new IllegalArgumentException("참가자 수가 홀수입니다.");
+            }
+
             //MemberID -> CreatePlayer
             playerService.registerPlayers(request);
             //Player -> Create Match and Round

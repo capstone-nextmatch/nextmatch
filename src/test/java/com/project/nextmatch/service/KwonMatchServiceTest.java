@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -104,18 +105,6 @@ class KwonMatchServiceTest {
                         .build()
         );
 
-        // 테스트용 Player 2명 생성
-        Player p1 = playerRepository.save(Player.builder().member(members.get(0)).contest(contest).build());
-        Player p2 = playerRepository.save(Player.builder().member(members.get(1)).contest(contest).build());
-
-        // 테스트용 Match 생성
-        Match match = matchRepository.save(
-                Match.builder()
-                        .player1(p1)
-                        .player2(p2)
-                        .round(roundRepository.save(Round.builder().contest(contest).roundNumber(1).build()))
-                        .build()
-        );
 
     }
 
@@ -154,25 +143,6 @@ class KwonMatchServiceTest {
                         m.getPlayer2().getId(),
                         m.getRound().getId())
         );
-
-        // 3️⃣ 모든 경기 결과 입력
-        List<MatchResultRequest> results = matchRepository.findAll().stream()
-                .map(m -> {
-                    MatchResultRequest dto = new MatchResultRequest();
-                    dto.setMatchId(m.getId());
-                    dto.setScore1(3); // player1 승리
-                    dto.setScore2(1);
-                    return dto;
-                })
-                .toList();
-
-        matchService.submitMatchResults(results);
-
-        // 4️⃣ 다음 라운드 생성 여부 검증
-        List<Round> rounds = roundRepository.findAll();
-        rounds.forEach(r -> log.info("Round ID={}, Round Number={}", r.getId(), r.getRoundNumber()));
-
-        assertTrue(rounds.size() > 1, "다음 라운드가 생성되어야 합니다.");
     }
 
     @Test
@@ -354,6 +324,56 @@ class KwonMatchServiceTest {
     }
 
     @Test
+    @DisplayName("6. 참가자 수 부족 시 실패")
+    void createMatch_fail_notEnoughPlayers() throws Exception {
+        // given: 참가자 1명만 전달
+        List<Long> memberIds = members.subList(0, 1).stream()
+                .map(Member::getId)
+                .toList();
+
+        String requestJson = """
+    {
+      "memberId": %s,
+      "contestId": %d
+    }
+    """.formatted(memberIds, contest.getId());
+
+        // when & then
+        mockMvc.perform(post("/api/event/create/matches")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest());
+
+    }
+
+    @Test
+    @DisplayName("7. 참가자 수 홀수 시 실패")
+    void createMatch_fail_oddNumberOfPlayers() throws Exception {
+        // given: 15명만 전달 (홀수)
+        List<Long> memberIds = members.subList(0, 15).stream()
+                .map(Member::getId)
+                .toList();
+
+        String requestJson = """
+    {
+      "memberId": %s,
+      "contestId": %d
+    }
+    """.formatted(memberIds, contest.getId());
+
+        // when & then
+        mockMvc.perform(post("/api/event/create/matches")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(
+                        org.hamcrest.Matchers.containsString("참가자 수가 홀수입니다")));
+    }
+
+
+    @Test
     @DisplayName("8. 잘못된 MatchID로 경기 결과 입력 실패")
     void submitResults_fail_invalidMatchId() throws Exception {
         // given: 존재하지 않는 Match ID
@@ -423,4 +443,57 @@ class KwonMatchServiceTest {
                 .andExpect(content().string(
                         org.hamcrest.Matchers.containsString("점수가 누락되었습니다")));
     }
+
+    @Test
+    @DisplayName("10. 다음 라운드 자동 생성 검증")
+    void createMatch_success_nextRoundGenerated() throws Exception {
+        // given: 16명의 memberId와 contestId
+        List<Long> memberIds = members.stream()
+                .map(Member::getId)
+                .collect(Collectors.toList());
+
+        String requestJson = """
+                {
+                  "memberId": %s,
+                  "contestId": %d
+                }
+                """.formatted(memberIds, contest.getId());
+
+        // when & then
+        mockMvc.perform(post("/api/event/create/matches")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isOk())
+                .andExpect(content().string("각 경기생성이 완료되었습니다."));
+
+        // 👇 로그 출력
+        matchRepository.findAll().forEach(m ->
+                log.info("Match ID={}, Player1={}, Player2={}, Round={}",
+                        m.getId(),
+                        m.getPlayer1().getId(),
+                        m.getPlayer2().getId(),
+                        m.getRound().getId())
+        );
+
+        // 3️⃣ 모든 경기 결과 입력
+        List<MatchResultRequest> results = matchRepository.findAll().stream()
+                .map(m -> {
+                    MatchResultRequest dto = new MatchResultRequest();
+                    dto.setMatchId(m.getId());
+                    dto.setScore1(3); // player1 승리
+                    dto.setScore2(1);
+                    return dto;
+                })
+                .toList();
+
+        matchService.submitMatchResults(results);
+
+        // 4️⃣ 다음 라운드 생성 여부 검증
+        List<Round> rounds = roundRepository.findAll();
+        rounds.forEach(r -> log.info("Round ID={}, Round Number={}", r.getId(), r.getRoundNumber()));
+
+        assertTrue(rounds.size() > 1, "다음 라운드가 생성되어야 합니다.");
+    }
+
 }
