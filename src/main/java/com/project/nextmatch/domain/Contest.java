@@ -41,9 +41,6 @@ public class Contest {
 
     private LocalDate deadlineDate;
 
-    @Column(name = "format", length = 50)
-    private String format;
-
     // 대진표 관련 다른 정보들 (예: 장소, 종목 등)은 여기에 추가될 수 있습니다.
 
 }
