@@ -57,7 +57,7 @@
 </main>
 <script>
     function signup(){
-        const userid = document.getElementById('userid').value;
+        const username = document.getElementById('userid').value;
         const fullname = document.getElementById('fullname').value;
         const password = document.getElementById('password').value;
         const passwordConfirm = document.getElementById('password-confirm').value;
@@ -72,7 +72,7 @@
 
         // DTO의 변수명과 키(key)를 정확히 일치시킵니다.
         const data = {
-            userId: userid,
+            username: username,
             name: fullname,
             password: password,
             passwordConfirm: passwordConfirm,
