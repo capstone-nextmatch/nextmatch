@@ -1,10 +1,12 @@
-//1006 백송렬 작성
+//1006  백송렬 작성
 package com.project.nextmatch.controller;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.project.nextmatch.PhoneDeserializer;
 import com.project.nextmatch.service.MemberService;
 import com.project.nextmatch.validation.GongBack;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -14,6 +16,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import java.security.Principal;
+
+import java.security.AuthProvider;
 
 @RestController // 이 클래스를 RESTful API의 컨트롤러로 선언합니다.
 @RequestMapping("/api")
@@ -55,6 +60,13 @@ public class MemberController {
         public String email;
 
     }
+    public static class LoginRequest {
+        @NotBlank(message = "아이디는 비워둘 수 없습니다.")
+        public String username;
+
+        @NotBlank(message = "비밀번호는 비워둘 수 없습니다.")
+        public String password;
+    }
 
 
     @PostMapping("/signup")
@@ -71,15 +83,34 @@ public class MemberController {
 
     // 이 예제에서는 로그인 성공/실패만 간단히 반환합니다.
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody SignupRequest request) {
+    public ResponseEntity<String> login(@Valid @RequestBody LoginRequest request, HttpServletRequest httpRequest) {
         try{
             memberService.login(request.username, request.password);
+            httpRequest.login(request.username, request.password);
             return ResponseEntity.ok("로그인 성공");
         }catch (IllegalArgumentException e){
             //실패 시, 400 Bad Request 상태 코드와 에러 메시지 반환 (실패 보고)
             return ResponseEntity.badRequest().body(e.getMessage());
+        }catch (ServletException e){
+            return ResponseEntity.badRequest().body("로그인 처리에 실패했습니다.");
         }
 
+    }
+
+    public static class MeResponse {
+        public String username;
+
+        public MeResponse(String username) {
+            this.username = username;
+        }
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> me(Principal principal) {
+        if (principal == null) {
+            return ResponseEntity.status(401).body("로그인되어 있지 않습니다.");
+        }
+        return ResponseEntity.ok(new MeResponse(principal.getName()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

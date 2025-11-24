@@ -1,3 +1,4 @@
+//백송렬 작성
 package com.project.nextmatch.validation;
 
 import com.project.nextmatch.validation.GongBackValidation;
@@ -21,7 +22,7 @@ public @interface GongBack {
     //기본 메시지
     String message() default "공백을 포함할 수 없습니다.";
 
-    // (이하 2개는 유효성 검사 어노테이션의 필수 상용구)
+    //(이하 2개는 유효성 검사 어노테이션의 필수 상용구)
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

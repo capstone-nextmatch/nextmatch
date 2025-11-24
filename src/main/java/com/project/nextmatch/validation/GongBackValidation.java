@@ -1,3 +1,4 @@
+//백송렬 작성
 package com.project.nextmatch.validation;
 
 import jakarta.validation.ConstraintValidator;
@@ -15,8 +16,8 @@ public class GongBackValidation implements ConstraintValidator<GongBack, String>
         }
 
 
-        //    - 공백(스페이스, 탭, 줄바꿈 등)이 "포함되어 있으면" true를 반환
-        //    - 공백이 "전혀 없으면" false를 반환
+        //공백(스페이스, 탭, 줄바꿈 등)이 "포함되어 있으면" true를 반환
+        //공백이 "전혀 없으면" false를 반환
         return !StringUtils.containsWhitespace(value);
     }
 }

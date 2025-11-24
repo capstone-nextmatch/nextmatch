@@ -12,6 +12,7 @@ public class PageController {
         return "home";
     }
 
+    @GetMapping("/register-contest") public String registerContest() {return "register-contest";}
 
     @GetMapping("/main") public String main() {return "main";}
 
@@ -20,4 +21,6 @@ public class PageController {
     @GetMapping("/signup") public String signup() {return "signup";}
 
     @GetMapping("/mypage") public String mypage() {return "mypage";}
+
+    @GetMapping("/dashboard") public String dashboard() {return "dashboard";}
 }

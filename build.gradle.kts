@@ -29,6 +29,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	compileOnly("org.projectlombok:lombok")
+    testCompileOnly("org.projectlombok:lombok")
+    testAnnotationProcessor("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("com.h2database:h2")
 	implementation("com.mysql:mysql-connector-j:8.0.33")
@@ -38,6 +40,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")//1006 백송렬 작성
     testImplementation("org.springframework.security:spring-security-test")//1006 백송렬 작성
     implementation ("org.springframework.boot:spring-boot-starter-validation")//1006 백송렬 작성
+    implementation("org.jsoup:jsoup:1.21.2")
 }
 
 tasks.withType<Test> {
