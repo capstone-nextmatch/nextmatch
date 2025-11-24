@@ -1,14 +1,22 @@
-//이병철
+//이병철, 권동혁
 package com.project.nextmatch.repository;
 
 import com.project.nextmatch.domain.Match; // Match 엔티티 경로에 맞게 수정
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import com.project.nextmatch.domain.Round;
+
+import java.util.List;
+
+
 @Repository
 public interface MatchRepository extends JpaRepository<Match, Long> {
+  
+    List<Match> findByRound(Round round);
 
     // 🛑 경기의 점수와 상태를 업데이트하는 쿼리 (핵심 로직 1)
     @Modifying
@@ -27,4 +35,3 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
     @Modifying
     @Query(value = "UPDATE Match m SET m.teamB = :winnerTeamName WHERE m.id = :nextMatchId AND m.teamB IS NULL", nativeQuery = true)
     int updateNextRoundTeamB(@Param("nextMatchId") Long nextMatchId, @Param("winnerTeamName") String winnerTeamName);
-}
