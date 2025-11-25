@@ -8,6 +8,7 @@ import lombok.*;
 @Entity
 @Table(name = "members")
 @Builder
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter //1006 백송렬 작성 WishService에서 오류가 나길래 추가 시켰습니다.

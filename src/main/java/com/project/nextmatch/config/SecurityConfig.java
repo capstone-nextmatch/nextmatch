@@ -1,4 +1,4 @@
-//백송 작성
+//백송렬 작성
 package com.project.nextmatch.config;
 
 import org.springframework.context.annotation.Bean;
