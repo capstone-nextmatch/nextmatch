@@ -26,4 +26,5 @@ public class WishListResponseDto {
                 .registeredAt(wishList.getRegisteredAt())
                 .build();
     }
+
 }

@@ -1,15 +1,17 @@
-//1006 백송렬 작성
+//백송 작성
 package com.project.nextmatch.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.header.writers.XXssProtectionHeaderWriter;
+
 
 @Configuration // 이 클래스를 설정 클래스로 선언합니다.
 @EnableWebSecurity
@@ -47,7 +49,16 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID") //쿠키 삭제
                 )
                 .headers(headers -> headers
-                        .frameOptions(frame -> frame.sameOrigin()));
+                        .frameOptions(frame -> frame.sameOrigin()))
+
+                .headers(headers -> headers
+                        .xssProtection(xss ->
+                                xss.headerValue(XXssProtectionHeaderWriter.HeaderValue.ENABLED_MODE_BLOCK)
+                        )
+                        .contentSecurityPolicy(csp -> csp.policyDirectives("script-src 'self'"))
+                )
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+
 
         return http.build();
     }

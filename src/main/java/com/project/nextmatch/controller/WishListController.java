@@ -70,4 +70,5 @@ public class WishListController {
         boolean isWished = wishListService.isContestWished(memberId, contestId);
         return ResponseEntity.ok(isWished);
     }
+
 }

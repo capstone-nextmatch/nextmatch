@@ -1,8 +1,6 @@
 package com.project.nextmatch;
 
 import com.project.nextmatch.domain.Member;
-import com.project.nextmatch.dto.EventCreateRequest;
-import com.project.nextmatch.service.EventService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
