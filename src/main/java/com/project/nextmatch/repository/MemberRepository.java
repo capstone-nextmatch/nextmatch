@@ -1,4 +1,4 @@
-//권동혁
+//백송렬
 
 package com.project.nextmatch.repository;
 
