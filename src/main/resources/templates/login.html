@@ -5,15 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NextMatch - 로그인</title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 <header>
     <strong>NextMatch</strong>
     <nav>
         <a href="/main">메인</a>
-        <a href="/login">로그인</a>
-        <a href="/signup">회원가입</a>
+        <a href="/login" id="nav-login">로그인</a>
+        <a href="/signup" id="nav-signup">회원가입</a>
+        <a href="/mypage" id="nav-mypage" style="display:none">마이페이지</a>
+        <a href="/logout" id="nav-logout" style="display:none">로그아웃</a> <!--1120 백송렬-->
     </nav>
 </header>
 
@@ -37,6 +39,39 @@
     </div>
 </main>
 <script>
+    async function setupHeader() {
+        const loginLink = document.getElementById('nav-login');
+        const signupLink = document.getElementById('nav-signup');
+        const logoutLink = document.getElementById('nav-logout');
+        const mypageLink = document.getElementById('nav-mypage');
+
+        try {
+            const res = await fetch('/api/me');
+
+            if (res.ok) {
+                // 로그인 상태
+                if (loginLink) loginLink.style.display = 'none';
+                if (signupLink) signupLink.style.display = 'none';
+                if (logoutLink) logoutLink.style.display = 'inline';
+                if (mypageLink) mypageLink.style.display = 'inline';
+            } else {
+                // 비로그인 상태
+                if (loginLink) loginLink.style.display = 'inline';
+                if (signupLink) signupLink.style.display = 'inline';
+                if (logoutLink) logoutLink.style.display = 'none';
+                if (mypageLink) mypageLink.style.display = 'none';
+            }
+        } catch (e) {
+            console.error('로그인 상태 확인 중 에러:', e);
+            // 에러 나면 보수적으로 비로그인처럼 처리
+            if (loginLink) loginLink.style.display = 'inline';
+            if (signupLink) signupLink.style.display = 'inline';
+            if (logoutLink) logoutLink.style.display = 'none';
+            if (mypageLink) mypageLink.style.display = 'none';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', setupHeader);
     function login() {
         // 1. HTML에서 id를 이용해 입력값을 가져옵니다.
         const userId = document.getElementById('userId').value;

@@ -1,3 +1,7 @@
+/**
+ * Filename: WishlistService.java
+ * Author: Sejun Park
+ */
 package com.project.nextmatch.service;
 
 import com.project.nextmatch.dto.WishListRequestDto;
@@ -85,3 +89,4 @@ public class WishListService {
         return wishListRepository.existsByMember_IdAndContest_Id(memberId, contestId);
     }
 }
+

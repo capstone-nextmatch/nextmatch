@@ -1,3 +1,7 @@
+/**
+ * Filename: WishlistRequestDto.java
+ * Author: Sejun Park
+ */
 package com.project.nextmatch.dto;
 
 import lombok.Getter;

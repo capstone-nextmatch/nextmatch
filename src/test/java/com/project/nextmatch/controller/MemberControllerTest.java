@@ -1,3 +1,4 @@
+//백송렬 작성
 package com.project.nextmatch.controller;
 
 import com.project.nextmatch.repository.MemberRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -34,6 +36,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -259,5 +262,70 @@ class MemberControllerTest {
         //응답 시간이 1초(1000ms) 미만인지 검증!
         assertThat(responseTimeMillis).isLessThan(1000L);
     }
+    //백송렬 작성
+    @Test
+    @DisplayName("로그인_후_me_200_OK_및_유저정보반환")
+    void me_success_after_login() throws Exception {
+
+        // 1. 회원가입 먼저
+        String signupJson = """
+            {
+              "username": "meuser",
+              "name": "테스트유저",
+              "password": "password1234!",
+              "passwordConfirm": "password1234!",
+              "phone": "01012345678",
+              "email": "meuser@test.com"
+            }
+            """;
+
+        mockMvc.perform(
+                        post("/api/signup")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(signupJson)
+                )
+                .andExpect(status().isOk());
+
+
+        // 2. 로그인 → 세션 확보
+        String loginJson = """
+            {
+              "username": "meuser",
+              "password": "password1234!"
+            }
+            """;
+
+        MvcResult loginResult = mockMvc.perform(
+                        post("/api/login")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(loginJson)
+                )
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+
+        MockHttpSession session = (MockHttpSession) loginResult.getRequest().getSession();
+
+
+        // 3. /api/me 호출
+        mockMvc.perform(
+                        get("/api/me").session(session)
+                )
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("meuser")))   // username 들어있는지 확인
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("비로그인_me_403")
+    void me_fail_without_login() throws Exception {
+
+        mockMvc.perform(
+                        get("/api/me")
+                )
+                .andExpect(status().isForbidden())
+                .andDo(print());
+    }
+
 
 }

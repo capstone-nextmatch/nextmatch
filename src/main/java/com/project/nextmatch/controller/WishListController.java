@@ -1,3 +1,7 @@
+/**
+ * Filename: WishlistController.java
+ * Author: Sejun Park
+ */
 package com.project.nextmatch.controller;
 
 import com.project.nextmatch.dto.WishListRequestDto;

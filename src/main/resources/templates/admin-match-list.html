@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 - 대회 목록</title>
+    <style>
+        body { font-family: system-ui, sans-serif; margin: 0; background: #f4f4f9; }
+        .admin-header { background: #333; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .admin-header a { color: white; text-decoration: none; margin-left: 20px; }
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        h1 { color: #333; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+        .match-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .contest-card { background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); padding: 20px; cursor: pointer; transition: transform 0.2s; }
+        .contest-card:hover { transform: translateY(-5px); box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); }
+        .contest-card h3 { margin-top: 0; color: #007bff; }
+        .status-badge { display: inline-block; padding: 5px 10px; border-radius: 4px; font-size: 0.8em; }
+        .status-upcoming { background: #ffe0b2; color: #ff9800; }
+        .status-ongoing { background: #c8e6c9; color: #4caf50; }
+    </style>
+</head>
+<body>
+<header class="admin-header">
+    <strong>NextMatch 관리자 페이지</strong>
+    <nav>
+        <a href="/admin/match/list">경기 결과 관리</a>
+        <a href="/dashboard">사이트 메인</a>
+    </nav>
+</header>
+
+<div class="container">
+    <h1>경기 결과 입력 관리 (대회 선택)</h1>
+
+    <div id="contest-list" class="match-list">
+    </div>
+
+    <p id="loading-status" style="text-align: center; margin-top: 50px;">대회 목록을 불러오는 중...</p>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', fetchContestList);
+
+    /**
+     * API를 통해 전체 대회 목록을 가져옵니다. (기존 /api/event/list 재사용)
+     */
+    function fetchContestList() {
+        const container = document.getElementById('contest-list');
+        const statusMessage = document.getElementById('loading-status');
+
+        // 기존에 구현한 목록 API를 재사용합니다.
+        fetch('/api/event/list')
+            .then(response => {
+                if (!response.ok) throw new Error('API 로드 실패');
+                return response.json();
+            })
+            .then(contests => {
+                statusMessage.style.display = 'none';
+                if (contests.length === 0) {
+                    container.innerHTML = '<p style="grid-column: 1 / -1; text-align: center;">현재 관리 가능한 대회가 없습니다.</p>';
+                    return;
+                }
+
+                contests.forEach(contest => {
+                    const card = createContestCard(contest);
+                    container.appendChild(card);
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching contests:", error);
+                statusMessage.textContent = '대회 목록을 불러오는 데 실패했습니다.';
+            });
+    }
+
+    /**
+     * 개별 대회 카드를 생성하고 클릭 이벤트를 추가합니다.
+     */
+    function createContestCard(contest) {
+        const card = document.createElement('div');
+        card.className = 'contest-card';
+
+        const statusClass = contest.status ? contest.status.toLowerCase() : 'unknown';
+
+        card.innerHTML = `
+            <h3>${contest.title}</h3>
+            <p><strong>종목:</strong> ${contest.eventCategory}</p>
+            <p><strong>형식:</strong> ${contest.format || '미정'}</p>
+            <p><strong>시작일:</strong> ${contest.startDate}</p>
+            <span class="status-badge status-${statusClass}">${contest.status}</span>
+        `;
+
+        // 🛑 카드 클릭 시, 다음 단계인 대진표 입력 페이지로 이동
+        card.addEventListener('click', () => {
+            // /admin/match/result?contestId=X 로 이동하도록 설계 (AdminMatchController의 GetMapping 추가 필요)
+            window.location.href = `/admin/match/result?contestId=${contest.id}`;
+        });
+
+        return card;
+    }
+</script>
+</body>
+</html>>
