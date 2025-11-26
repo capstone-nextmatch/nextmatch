@@ -3,10 +3,10 @@ package com.project.nextmatch;
 
 import com.project.nextmatch.domain.Contest;
 import com.project.nextmatch.domain.Member;
-import com.project.nextmatch.domain.Match; // 🛑 Match 엔티티 import 추가
+import com.project.nextmatch.domain.Match;
 import com.project.nextmatch.repository.ContestRepository;
 import com.project.nextmatch.repository.MemberRepository;
-import com.project.nextmatch.repository.MatchRepository; // 🛑 MatchRepository import 추가
+import com.project.nextmatch.repository.MatchRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
@@ -22,8 +22,7 @@ public class DataLoader implements ApplicationRunner {
 
     private final MemberRepository memberRepository;
     private final ContestRepository contestRepository;
-    private final MatchRepository matchRepository; // 🛑 MatchRepository 주입
-    // private final PasswordEncoder passwordEncoder;
+    private final MatchRepository matchRepository;
 
     @Override
     @Transactional
@@ -49,7 +48,7 @@ public class DataLoader implements ApplicationRunner {
                 .description("미니 축구 토너먼트입니다.")
                 .startDate(LocalDate.now().plusDays(10))
                 .deadlineDate(LocalDate.now().plusDays(5))
-                .format("TOURNAMENT") // 🛑 형식 추가
+                .format("TOURNAMENT")
                 .build());
 
         // 2-2. 리그 형식 대회
@@ -62,11 +61,11 @@ public class DataLoader implements ApplicationRunner {
                 .description("경쟁적인 리그전입니다.")
                 .startDate(LocalDate.now().plusMonths(1))
                 .deadlineDate(LocalDate.now().plusWeeks(3))
-                .format("LEAGUE") // 🛑 형식 추가
+                .format("LEAGUE")
                 .build());
 
 
-        // 🛑 3. Match 테이블에 테스트 데이터 추가
+        // 3. Match 테이블에 테스트 데이터 추가
 
         // 3-1. 토너먼트 매치 데이터 (결과 입력이 필요한 상태)
         matchRepository.save(Match.builder()
