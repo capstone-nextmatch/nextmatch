@@ -1,4 +1,4 @@
-//권동혁
+//백송렬
 
 package com.project.nextmatch.repository;
 
@@ -12,5 +12,8 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findByUsername(String username);
+    Optional<Member> findByName(String name);
+    Optional<Member> findByPhone(String phone);
+    Optional<Member> findByEmail(String Email);
 
 }

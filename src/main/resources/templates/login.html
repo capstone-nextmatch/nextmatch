@@ -1,48 +1,114 @@
-<!doctype html>
+<!-- 1006 백송렬 작성 -->
+<!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NextMatch - 로그인</title>
-    <style>
-        body{font-family:system-ui,apple-system,Segoe UI,Roboto;margin:0}
-        header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #eee}
-        nav a{margin-right:12px;text-decoration:none;color:#333}
-        .container{max-width:420px;margin:40px auto;padding:0 16px}
-        .field{display:flex;flex-direction:column;margin-bottom:12px}
-        input{padding:10px;border:1px solid #ddd;border-radius:10px}
-        .row{display:flex;gap:8px;margin-top:12px}
-        .btn{display:inline-block;padding:10px 14px;border-radius:10px;border:1px solid #ddd;text-decoration:none;color:#111;text-align:center;flex:1}
-        .btn.primary{background:#111;color:#fff;border-color:#111}
-    </style>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 <header>
     <strong>NextMatch</strong>
     <nav>
         <a href="/main">메인</a>
-        <a href="/login">로그인</a>
-        <a href="/signup">회원가입</a>
+        <a href="/login" id="nav-login">로그인</a>
+        <a href="/signup" id="nav-signup">회원가입</a>
+        <a href="/mypage" id="nav-mypage" style="display:none">마이페이지</a>
+        <a href="/logout" id="nav-logout" style="display:none">로그아웃</a> <!--1120 백송렬-->
     </nav>
 </header>
 
-<div class="container">
-    <h2>로그인</h2>
-    <!-- 아직 백엔드 연동 전: action은 메인으로 이동만 -->
-    <form action="/main" method="get">
-        <div class="field">
-            <label for="username">아이디</label>
-            <input id="username" name="username" type="text" placeholder="아이디" />
-        </div>
-        <div class="field">
-            <label for="password">비밀번호</label>
-            <input id="password" name="password" type="password" placeholder="비밀번호" />
-        </div>
-        <div class="row">
-            <button class="btn primary" type="submit">로그인</button>
-            <a class="btn" href="/signup">회원가입</a>
-        </div>
-    </form>
-</div>
+<main class="main-content">
+    <div class="form-wrapper login-form">
+        <form>
+            <h2>로그인</h2>
+
+            <div class="input-group">
+                <label for="userId">아이디</label>
+                <input type="text" id="userId" name="userId" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <button type="button" onclick="login()">로그인</button>
+        </form>
+    </div>
+</main>
+<script>
+    async function setupHeader() {
+        const loginLink = document.getElementById('nav-login');
+        const signupLink = document.getElementById('nav-signup');
+        const logoutLink = document.getElementById('nav-logout');
+        const mypageLink = document.getElementById('nav-mypage');
+
+        try {
+            const res = await fetch('/api/me');
+
+            if (res.ok) {
+                // 로그인 상태
+                if (loginLink) loginLink.style.display = 'none';
+                if (signupLink) signupLink.style.display = 'none';
+                if (logoutLink) logoutLink.style.display = 'inline';
+                if (mypageLink) mypageLink.style.display = 'inline';
+            } else {
+                // 비로그인 상태
+                if (loginLink) loginLink.style.display = 'inline';
+                if (signupLink) signupLink.style.display = 'inline';
+                if (logoutLink) logoutLink.style.display = 'none';
+                if (mypageLink) mypageLink.style.display = 'none';
+            }
+        } catch (e) {
+            console.error('로그인 상태 확인 중 에러:', e);
+            // 에러 나면 보수적으로 비로그인처럼 처리
+            if (loginLink) loginLink.style.display = 'inline';
+            if (signupLink) signupLink.style.display = 'inline';
+            if (logoutLink) logoutLink.style.display = 'none';
+            if (mypageLink) mypageLink.style.display = 'none';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', setupHeader);
+    function login() {
+        // 1. HTML에서 id를 이용해 입력값을 가져옵니다.
+        const userId = document.getElementById('userId').value;
+        const password = document.getElementById('password').value;
+
+        // 2. 서버로 보낼 데이터를 JSON 형태로 만듭니다.
+        //UserController의 LoginRequest DTO 필드명과 일치해야 합니다.
+        const data = {
+            username: userId,
+            password: password
+        };
+
+        // 3. fetch API를 이용해 서버로 POST 요청을 보냅니다.
+        fetch('/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('로그인 성공!');
+                // 로그인 성공 시, 메인 페이지나 다른 페이지로 이동시킬 수 있습니다.
+                window.location.href = '/main';
+            } else {
+                // 서버에서 보낸 에러 메시지를 받아서 표시
+                response.text().then(errorMessage => {
+                    alert('로그인 실패: ' + errorMessage);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('에러 발생:', error);
+            alert('에러가 발생했습니다.');
+        });
+    }
+</script>
 </body>
 </html>

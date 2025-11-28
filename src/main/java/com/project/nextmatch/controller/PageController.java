@@ -17,5 +17,15 @@ public class PageController {
 
     @GetMapping("/mypage") public String mypage() {return "mypage";}
 
+    @GetMapping("/register-contest") public String registerContest() {return "register-contest";}
+
+    @GetMapping("/main") public String main() {return "main";}
+
+    @GetMapping("/login") public String login() {return "login";}
+
+    @GetMapping("/signup") public String signup() {return "signup";}
+
+    @GetMapping("/mypage") public String mypage() {return "mypage";}
+
     @GetMapping("/dashboard") public String dashboard() {return "dashboard";}
 }

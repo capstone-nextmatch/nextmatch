@@ -49,4 +49,3 @@ public class WishList {
         this.registeredAt = LocalDateTime.now();
     }
 }
-
