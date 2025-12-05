@@ -15,7 +15,6 @@ import org.jsoup.safety.Safelist;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 
-import java.awt.geom.RoundRectangle2D;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -30,6 +29,13 @@ public class ContestService {
     private final MatchRepository matchRepository;
     private final RoundRepository roundRepository;
     private final RoundService roundService;
+
+    @Transactional(readOnly = true)
+    public Contest findContestById(Long id) {
+        // ContestRepository를 사용하여 ID 조회, 데이터가 없으면 IllegalArgumentException 발생
+        return contestRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Contest not found with id: " + id));
+    }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Contest contestCreate(ContestCreateRequest request) {
