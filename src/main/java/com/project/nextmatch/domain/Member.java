@@ -24,4 +24,9 @@ public class Member {
     @Column(nullable = false, length = 100)
     private String password;
 
+    //박세준
+    public Member(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 }
