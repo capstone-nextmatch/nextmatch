@@ -3,13 +3,13 @@
 package com.project.nextmatch.controller;
 
 import com.project.nextmatch.dto.ContestCreateRequest;
-import com.project.nextmatch.dto.MatchCreateRequest;
+import com.project.nextmatch.dto.MatchCreateRequest; // MatchCreateRequest 추가
 import com.project.nextmatch.service.ContestService;
-import com.project.nextmatch.service.PlayerService;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
+import com.project.nextmatch.service.PlayerService; // PlayerService 추가
+import jakarta.persistence.EntityNotFoundException; // 예외 처리 추가
+import jakarta.validation.Valid; // @Valid 어노테이션 추가
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatus; // HttpStatus 추가
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,10 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class ContestController {
 
     private final ContestService contestService;
-    private final PlayerService playerService;
+    private final PlayerService playerService; // PlayerService 의존성 추가
 
     @PostMapping("/create")
-    public ResponseEntity<?> createEvent(@Valid @RequestBody ContestCreateRequest request) {
+    public ResponseEntity<?> createEvent(@Valid @RequestBody ContestCreateRequest request) { // @Valid 어노테이션 추가
         try {
             contestService.contestCreate(request);
             return ResponseEntity.ok("대회등록이 완료되었습니다.");
