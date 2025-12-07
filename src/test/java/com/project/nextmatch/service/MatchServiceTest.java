@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Slf4j
-class KwonMatchServiceTest {
+class MatchServiceTest {
     @PersistenceContext
     private EntityManager em;
 
