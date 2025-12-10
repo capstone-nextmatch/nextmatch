@@ -29,6 +29,8 @@ public class DataLoader implements ApplicationRunner {
                 .username("testuser")
                 // .password(passwordEncoder.encode("password123")) // 암호화가 있다면 사용
                 .password("password123")
+                .name("Baeksongryul")
+                .email("test01@test.com")
                 .build();
 
         memberRepository.save(testMember);

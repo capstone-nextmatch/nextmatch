@@ -1,10 +1,11 @@
-package com.project.nextmatch.service;
+package com.project.nextmatchTest.service;
 
 import com.project.nextmatch.domain.Contest;
 import com.project.nextmatch.domain.Member;
 import com.project.nextmatch.dto.ContestCreateRequest;
 import com.project.nextmatch.repository.ContestRepository;
 import com.project.nextmatch.repository.MemberRepository;
+import com.project.nextmatch.service.ContestService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.validation.ConstraintViolation;
