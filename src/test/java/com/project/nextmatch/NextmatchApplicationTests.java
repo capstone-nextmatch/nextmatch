@@ -1,4 +1,4 @@
-package com.project.nextmatchTest;
+package com.project.nextmatch;
 
 import com.project.nextmatch.domain.Member;
 import com.project.nextmatch.dto.ContestCreateRequest;

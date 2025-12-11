@@ -1,5 +1,5 @@
 //백송렬 작성
-package com.project.nextmatchTest.controller;
+package com.project.nextmatch.controller;
 
 import com.project.nextmatch.domain.Member;
 import com.project.nextmatch.repository.MemberRepository;

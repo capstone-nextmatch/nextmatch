@@ -1,11 +1,8 @@
-package com.project.nextmatchTest.service;
+package com.project.nextmatch.service;
 
 import com.project.nextmatch.domain.*;
 import com.project.nextmatch.dto.MatchResultRequest;
 import com.project.nextmatch.repository.*;
-import com.project.nextmatch.service.ContestService;
-import com.project.nextmatch.service.MatchService;
-import com.project.nextmatch.service.RoundService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.validation.Validator;
