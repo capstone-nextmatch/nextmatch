@@ -23,7 +23,7 @@ public class PageController {
     private final WishListService wishListService;
     private final MatchService matchService;
 
-    @GetMapping("/")
+    @GetMapping("/main")
     public String main() {
         return "main";
     }
